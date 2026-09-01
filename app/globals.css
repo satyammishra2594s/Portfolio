@@ -18,3 +18,11 @@ button, a { -webkit-tap-highlight-color: transparent; }
   html { scroll-behavior: auto; }
   *, *::before, *::after { animation-duration: .01ms !important; animation-iteration-count: 1 !important; transition-duration: .01ms !important; }
 }
+
+.matrix span { position:absolute; top:-20%; color:rgba(91,255,175,.55); font:10px/1.4 ui-monospace,SFMono-Regular,monospace; writing-mode:vertical-rl; animation:matrixFall linear infinite; }
+@keyframes matrixFall { from { transform:translateY(-20vh); opacity:0; } 15% { opacity:1; } 85% { opacity:1; } to { transform:translateY(120vh); opacity:0; } }
+.skill-tree { position:relative; display:grid; grid-template-columns:repeat(5,minmax(0,1fr)); gap:14px; }
+.skill-node { position:relative; z-index:1; box-shadow:0 0 25px rgba(255,90,25,.08), inset 0 0 24px rgba(80,160,255,.03); }
+.skill-line { position:absolute; left:7%; right:7%; top:50%; height:1px; background:linear-gradient(90deg,transparent,rgba(255,116,55,.65),rgba(84,181,255,.65),transparent); box-shadow:0 0 12px rgba(255,90,25,.35); }
+@media (max-width: 900px) { .skill-tree { grid-template-columns:repeat(2,minmax(0,1fr)); } .skill-line { display:none; } }
+@media (max-width: 560px) { .skill-tree { grid-template-columns:1fr; } }
