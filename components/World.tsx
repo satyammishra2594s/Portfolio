@@ -31,16 +31,21 @@ function Mountains() {
 
 function Gate({ z, final = false }: { z: number; final?: boolean }) {
   const left = useRef<THREE.Group>(null), right = useRef<THREE.Group>(null);
-  const pRef = useRef(0);
-  useFrame(() => {
-    const p = useWorldStore.getState().progress;
-    if (Math.abs(p - pRef.current) < .001) return;
-    pRef.current = p;
-    const start = Math.min(Math.max((Math.abs(z) / 180) - .08, 0), .8);
-    const open = THREE.MathUtils.clamp((p - start) / .1, 0, 1);
-    if (left.current) left.current.rotation.y = THREE.MathUtils.lerp(0, .8, open);
-    if (right.current) right.current.rotation.y = THREE.MathUtils.lerp(0, -.8, open);
-  });
+  useEffect(() => {
+    const trigger = ScrollTrigger.create({
+      trigger: document.body,
+      start: 'top top',
+      end: 'bottom bottom',
+      scrub: 1,
+      onUpdate: self => {
+        const start = Math.min(Math.max((Math.abs(z) / 180) - .08, 0), .8);
+        const open = THREE.MathUtils.clamp((self.progress - start) / .1, 0, 1);
+        gsap.to(left.current?.rotation || {}, { y: .8 * open, duration: .18, overwrite: true });
+        gsap.to(right.current?.rotation || {}, { y: -.8 * open, duration: .18, overwrite: true });
+      }
+    });
+    return () => trigger.kill();
+  }, [z]);
   return <group position={[0, 3, z]} scale={final ? 1.28 : 1}>
     {[-1, 1].map(s => <mesh key={s} position={[s * 5, 0, 0]} castShadow><cylinderGeometry args={[.75, .9, 12, 10]} /><meshStandardMaterial color="#35130b" metalness={.35} roughness={.5} emissive="#381008" emissiveIntensity={1.1} /></mesh>)}
     <mesh position={[0, 8, 0]} castShadow><boxGeometry args={[13.5, 1, 1]} /><meshStandardMaterial color="#641b0b" metalness={.2} roughness={.5} emissive="#421006" emissiveIntensity={1.2} /></mesh>
@@ -87,7 +92,7 @@ function Samurai() {
 
 function CameraRig() {
   const { camera } = useThree(); const tl = useRef<gsap.core.Tween | null>(null); const mouse = useRef({ x: 0, y: 0 }); const reduced = useWorldStore(s => s.reduced);
-  useEffect(() => { if (reduced) return; const target = { progress: 0 }; tl.current = gsap.to(target, { progress: 1, ease: 'none', scrollTrigger: { trigger: document.body, start: 'top top', end: 'bottom bottom', scrub: 1, onUpdate: self => useWorldStore.getState().setProgress(self.progress) }, onUpdate: () => { camera.position.z = 5 - target.progress * 145; } }); const f = (e: MouseEvent) => { mouse.current.x = e.clientX / innerWidth - .5; mouse.current.y = e.clientY / innerHeight - .5; }; addEventListener('mousemove', f); return () => { tl.current?.kill(); ScrollTrigger.getAll().forEach(t => t.kill()); removeEventListener('mousemove', f); }; }, [camera, reduced]);
+  useEffect(() => { if (reduced) return; const target = { progress: 0 }; tl.current = gsap.to(target, { progress: 1, ease: 'none', scrollTrigger: { trigger: document.body, start: 'top top', end: 'bottom bottom', scrub: 1, onUpdate: self => useWorldStore.getState().setProgress(self.progress) }, onUpdate: () => { camera.position.z = 5 - target.progress * 145; } }); const f = (e: MouseEvent) => { mouse.current.x = e.clientX / innerWidth - .5; mouse.current.y = e.clientY / innerHeight - .5; }; addEventListener('mousemove', f); return () => { tl.current?.kill(); tl.current?.scrollTrigger?.kill(); removeEventListener('mousemove', f); }; }, [camera, reduced]);
   useFrame(() => { if (reduced) return; camera.position.x = THREE.MathUtils.lerp(camera.position.x, mouse.current.x * .8, .05); camera.position.y = THREE.MathUtils.lerp(camera.position.y, 2.2 - mouse.current.y * .5, .05); camera.rotation.y = THREE.MathUtils.lerp(camera.rotation.y, -mouse.current.x * .035, .05); });
   return null;
 }
