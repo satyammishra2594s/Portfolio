@@ -32,6 +32,8 @@ function Mountains() {
 function Gate({ z, final = false }: { z: number; final?: boolean }) {
   const left = useRef<THREE.Group>(null), right = useRef<THREE.Group>(null);
   useEffect(() => {
+    const leftTo = left.current ? gsap.quickTo(left.current.rotation, 'y', { duration: .18, overwrite: true }) : () => {};
+    const rightTo = right.current ? gsap.quickTo(right.current.rotation, 'y', { duration: .18, overwrite: true }) : () => {};
     const trigger = ScrollTrigger.create({
       trigger: document.body,
       start: 'top top',
@@ -40,8 +42,8 @@ function Gate({ z, final = false }: { z: number; final?: boolean }) {
       onUpdate: self => {
         const start = Math.min(Math.max((Math.abs(z) / 180) - .08, 0), .8);
         const open = THREE.MathUtils.clamp((self.progress - start) / .1, 0, 1);
-        gsap.to(left.current?.rotation || {}, { y: .8 * open, duration: .18, overwrite: true });
-        gsap.to(right.current?.rotation || {}, { y: -.8 * open, duration: .18, overwrite: true });
+        leftTo(.8 * open);
+        rightTo(-.8 * open);
       }
     });
     return () => trigger.kill();
