@@ -1,5 +1,20 @@
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
+@import "tailwindcss";
 
-html,body{margin:0;min-height:100%;background:#030305;color:#fff}*{box-sizing:border-box}
+:root { color-scheme: dark; }
+html { scroll-behavior: smooth; background: #030305; }
+body { margin: 0; min-height: 100%; overflow-x: hidden; background: #030305; color: #fff; font-family: Arial, Helvetica, sans-serif; }
+* { box-sizing: border-box; }
+button, a { -webkit-tap-highlight-color: transparent; }
+
+.glass { background: linear-gradient(135deg, rgba(20,18,20,.72), rgba(5,6,9,.42)); border: 1px solid rgba(255,255,255,.11); box-shadow: 0 18px 70px rgba(0,0,0,.38), inset 0 1px 0 rgba(255,255,255,.06); backdrop-filter: blur(18px); }
+.hud { font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace; letter-spacing: .16em; text-transform: uppercase; text-shadow: 0 0 18px rgba(255,90,25,.35); }
+.fire-text { background: linear-gradient(180deg,#fff4d6 0%,#ffb35c 22%,#ff4b16 62%,#9d160b 100%); -webkit-background-clip: text; background-clip: text; color: transparent; filter: drop-shadow(0 0 28px rgba(255,67,12,.28)); }
+
+@media (max-width: 700px) {
+  .glass { backdrop-filter: blur(10px); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+  *, *::before, *::after { animation-duration: .01ms !important; animation-iteration-count: 1 !important; transition-duration: .01ms !important; }
+}
