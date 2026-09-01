@@ -32,7 +32,7 @@ function Mountains() {
 function Gate({ z, final = false }: { z: number; final?: boolean }) {
   const left = useRef<THREE.Group>(null), right = useRef<THREE.Group>(null);
   useEffect(() => {
-    const leftTo = left.current ? gsap.quickTo(left.current.rotation, 'y', { duration: .18, overwrite: true }) : () => {};
+    const leftTo = left.current ? gsap.quickTo(left.current.rotation, 'y', { duration: .18, overwrite: true }) : (_value: number) => {};
     const rightTo = right.current ? gsap.quickTo(right.current.rotation, 'y', { duration: .18, overwrite: true }) : () => {};
     const trigger = ScrollTrigger.create({
       trigger: document.body,
