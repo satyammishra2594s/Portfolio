@@ -30,9 +30,11 @@ button, a { -webkit-tap-highlight-color: transparent; }
 /* Keep portfolio controls tactile without triggering layout work on hover. */
 ::selection { background: rgba(113, 244, 255, .28); color: #fff; }
 :focus-visible { outline: 2px solid #71f4ff; outline-offset: 4px; }
-.skill-node { transition: transform .28s ease, border-color .28s ease, box-shadow .28s ease; }
-.skill-node:hover { transform: translate3d(0, -6px, 0); border-color: rgba(113,244,255,.35); box-shadow: 0 0 34px rgba(113,244,255,.13), 0 20px 60px rgba(0,0,0,.35); }
+.skill-node { position: relative; transition: transform .28s ease; }
+.skill-node::after { content: ''; position: absolute; inset: -1px; border: 1px solid rgba(113,244,255,.35); border-radius: inherit; box-shadow: 0 0 34px rgba(113,244,255,.13), 0 20px 60px rgba(0,0,0,.35); opacity: 0; pointer-events: none; transition: opacity .28s ease; }
+.skill-node:hover { transform: translate3d(0, -6px, 0); }
+.skill-node:hover::after { opacity: 1; }
 @media (prefers-reduced-motion: reduce) {
-  .skill-node { transition: none; }
+  .skill-node, .skill-node::after { transition: none; }
   .skill-node:hover { transform: none; }
 }
