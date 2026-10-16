@@ -18,7 +18,7 @@ export default function Overlay() {
 
   const jump = (i: number) => {
     const max = document.documentElement.scrollHeight - innerHeight;
-    scrollTo({ top: max * (i / (sections.length - 1)), behavior: 'smooth' });
+    scrollTo({ top: max * (i / (sections.length - 1)), behavior: matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth' });
   };
 
   return <div className="relative z-10 pointer-events-none">
