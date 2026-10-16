@@ -86,7 +86,7 @@ function Card({kicker,title,body,terminalText}:{kicker:string;title:string;body:
 }
 
 function SkillTree() {
-  const groups=[['AI & DATA',['AI','Data Science','Machine Learning','Statistics & Probability']],['PROGRAMMING',['Python','DSA']],['WEB',['HTML','CSS','JavaScript','Responsive Design']],['CYBERSECURITY',['Cybersecurity','Ethical Hacking','Kali Linux']],['TOOLS',['Git','GitHub','Vercel']]];
+  const groups: [string, string[]][] = [['AI & DATA',['AI','Data Science','Machine Learning','Statistics & Probability']],['PROGRAMMING',['Python','DSA']],['WEB',['HTML','CSS','JavaScript','Responsive Design']],['CYBERSECURITY',['Cybersecurity','Ethical Hacking','Kali Linux']],['TOOLS',['Git','GitHub','Vercel']]];
   return <div className="w-full max-w-6xl"><p className="hud text-xs text-orange-300">SKILL TREE</p><h2 className="mt-4 text-5xl font-black md:text-7xl">UNLOCKED<br/>ABILITIES</h2><div className="skill-tree mt-10"><div className="skill-line"/>{groups.map(([h,items])=><div key={h} className="glass skill-node rounded-2xl p-5"><p className="hud text-[10px] text-cyan-200">{h}</p><div className="mt-4 flex flex-wrap gap-2">{items.map(x=><span key={x} className="rounded-full border border-orange-300/10 bg-white/5 px-3 py-2 text-xs text-white/75">{x}</span>)}</div></div>)}</div></div>;
 }
 
