@@ -31,8 +31,10 @@ function Mountains() {
 }
 
 function Gate({ z, final = false }: { z: number; final?: boolean }) {
+  const reduced = useWorldStore(s => s.reduced);
   const left = useRef<THREE.Group>(null), right = useRef<THREE.Group>(null);
   useEffect(() => {
+    if (reduced) return;
     const leftTo = left.current ? gsap.quickTo(left.current.rotation, 'y', { duration: .18, overwrite: true }) : (_value: number) => {};
     const rightTo = right.current ? gsap.quickTo(right.current.rotation, 'y', { duration: .18, overwrite: true }) : (_value: number) => {};
     const trigger = ScrollTrigger.create({
@@ -48,7 +50,7 @@ function Gate({ z, final = false }: { z: number; final?: boolean }) {
       }
     });
     return () => trigger.kill();
-  }, [z]);
+  }, [z, reduced]);
   return <group position={[0, 3, z]} scale={final ? 1.28 : 1}>
     {[-1, 1].map(s => <mesh key={s} position={[s * 5, 0, 0]} castShadow><cylinderGeometry args={[.75, .9, 12, 10]} /><meshStandardMaterial color="#35130b" metalness={.35} roughness={.5} emissive="#381008" emissiveIntensity={1.1} /></mesh>)}
     <mesh position={[0, 8, 0]} castShadow><boxGeometry args={[13.5, 1, 1]} /><meshStandardMaterial color="#641b0b" metalness={.2} roughness={.5} emissive="#421006" emissiveIntensity={1.2} /></mesh>
@@ -64,8 +66,8 @@ float noise(vec2 p){vec2 i=floor(p),f=fract(p);f=f*f*(3.0-2.0*f);return mix(mix(
 void main(){vec2 uv=vUv;float n=noise(vec2(uv.x*4.0,uv.y*3.0-uTime*1.4));n+=.5*noise(vec2(uv.x*9.0,uv.y*7.0-uTime*2.1));float flame=smoothstep(.08,.78,(1.0-uv.y)+n*.55);float edge=smoothstep(.03,.28,uv.x)*smoothstep(.03,.28,1.0-uv.x);float a=flame*edge;vec3 deep=vec3(.35,.015,.002),orange=vec3(1.0,.12,.005),hot=vec3(1.0,.82,.32);vec3 col=mix(deep,orange,smoothstep(.15,.55,flame));col=mix(col,hot,smoothstep(.55,.92,flame));gl_FragColor=vec4(col,a*.92);}`;
 
 function Fire() {
-  const mat = useRef<THREE.ShaderMaterial>(null); const light = useRef<THREE.PointLight>(null);
-  useFrame(({ clock }) => { const t = clock.elapsedTime; if (mat.current) mat.current.uniforms.uTime.value = t; if (light.current) light.current.intensity = 7 + Math.sin(t * 8) * 1.3 + Math.sin(t * 17) * .7; });
+  const mat = useRef<THREE.ShaderMaterial>(null); const light = useRef<THREE.PointLight>(null); const reduced = useWorldStore(s => s.reduced);
+  useFrame(({ clock }) => { if (reduced) return; const t = clock.elapsedTime; if (mat.current) mat.current.uniforms.uTime.value = t; if (light.current) light.current.intensity = 7 + Math.sin(t * 8) * 1.3 + Math.sin(t * 17) * .7; });
   return <group position={[0, 0, -31]}><pointLight ref={light} color="#ff5720" distance={48} intensity={8} />
     <mesh position={[0, 3.2, 0]} scale={[5, 7, 2.5]}><planeGeometry args={[1, 1, 32, 32]} /><shaderMaterial ref={mat} vertexShader={fireVertex} fragmentShader={fireFragment} transparent depthWrite={false} blending={THREE.AdditiveBlending} uniforms={{ uTime: { value: 0 } }} /></mesh>
     <mesh position={[0, 1, -.8]}><sphereGeometry args={[2.5, 24, 16]} /><meshStandardMaterial color="#ff6b18" emissive="#ff2600" emissiveIntensity={5} /></mesh>
@@ -130,18 +132,6 @@ function EmberField() {
   return <points geometry={geometry} frustumCulled={false}>
     <shaderMaterial ref={material} vertexShader={emberVertex} fragmentShader={emberFragment} transparent depthWrite={false} blending={THREE.AdditiveBlending} uniforms={{ uTime: { value: 0 } }} />
   </points>;
-}
-
-function Samurai() {
-  return <group position={[4, -.9, -42]} rotation-y={-.25}>
-    <mesh position={[0, 2.2, 0]} castShadow><sphereGeometry args={[.65, 8, 6]} /><meshStandardMaterial color="#15171b" metalness={.55} roughness={.35} /></mesh>
-    <mesh position={[0, 1.2, 0]} castShadow><cylinderGeometry args={[.75, .9, 1.8, 8]} /><meshStandardMaterial color="#17191f" metalness={.5} roughness={.45} /></mesh>
-    <mesh position={[0, .15, 0]} castShadow><boxGeometry args={[.45, 1.7, .45]} /><meshStandardMaterial color="#101216" /></mesh>
-    <mesh position={[-.55, .9, 0]} rotation-z={-.35} castShadow><capsuleGeometry args={[.16, 1.1, 5, 8]} /><meshStandardMaterial color="#24262b" /></mesh>
-    <mesh position={[.55, .9, 0]} rotation-z={.35} castShadow><capsuleGeometry args={[.16, 1.1, 5, 8]} /><meshStandardMaterial color="#24262b" /></mesh>
-    <mesh position={[.95, 1.15, -.1]} rotation-z={-.7}><boxGeometry args={[.06, 2.7, .06]} /><meshStandardMaterial color="#d6d9df" metalness={.8} roughness={.2} emissive="#332014" emissiveIntensity={.4} /></mesh>
-    <mesh position={[.1, 2.82, 0]}><boxGeometry args={[1.15, .12, .8]} /><meshStandardMaterial color="#12151a" metalness={.65} roughness={.3} /></mesh>
-  </group>;
 }
 
 function CameraRig() {
