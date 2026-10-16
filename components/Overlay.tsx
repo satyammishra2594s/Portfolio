@@ -1,13 +1,11 @@
 'use client';
 
-import { useEffect, useMemo, useState } from 'react';
+import { useEffect, useMemo, useRef, useState } from 'react';
 import { motion } from 'framer-motion';
-import { useWorldStore } from '../lib/store';
 
 const sections = ['HOME','THE WARRIOR','THE JOURNEY','SKILL TREE','SHADOW ARTS','VICTORIES','FINAL BATTLE','ENDING'];
 
 export default function Overlay() {
-  const setProgress = useWorldStore(s => s.setProgress);
   const [terminalText, setTerminalText] = useState('');
   const terminal = 'shadow@kali:~$ skills --cyber';
   const codeRain = useMemo(() => Array.from({length: 22}, (_, i) => ({ left: (i * 4.7) % 100, delay: (i % 7) * .7, duration: 5 + (i % 5) })), []);
@@ -15,14 +13,8 @@ export default function Overlay() {
   useEffect(() => {
     let i = 0;
     const id = window.setInterval(() => { i += 1; setTerminalText(terminal.slice(0, i)); if (i >= terminal.length) window.clearInterval(id); }, 55);
-    const on = () => {
-      const max = document.documentElement.scrollHeight - innerHeight;
-      setProgress(max ? scrollY / max : 0);
-    };
-    addEventListener('scroll', on, { passive: true });
-    on();
-    return () => { clearInterval(id); removeEventListener('scroll', on); };
-  }, [setProgress]);
+    return () => clearInterval(id);
+  }, []);
 
   const jump = (i: number) => {
     const max = document.documentElement.scrollHeight - innerHeight;
@@ -36,7 +28,7 @@ export default function Overlay() {
 
     <PlayerHUD />
 
-    <main className="min-h-[900vh]">
+    <main className="min-h-[800vh]">
       <section className="flex min-h-screen items-center px-6 md:px-16">
         <div className="max-w-5xl">
           <p className="hud mb-5 text-xs text-orange-300">FORGING THE WORLD • PLAYER 01</p>
@@ -59,7 +51,7 @@ export default function Overlay() {
         <Card kicker="SHADOW ARTS • CYBERSECURITY" title="Enter the shadow realm." body="Cybersecurity • Ethical Hacking • Kali Linux" terminalText={terminalText} />
       </section>
 
-            <section className="flex min-h-screen items-center px-6 md:px-16"><Victories /></section>
+      <section className="flex min-h-screen items-center px-6 md:px-16"><Victories /></section>
 
       <section className="flex min-h-screen items-center justify-center px-6 text-center">
         <div className="max-w-4xl"><p className="hud text-xs text-orange-300">FINAL BATTLE</p><h2 className="mt-5 text-5xl font-black md:text-8xl">THE JOURNEY<br/>DOESN&apos;T END HERE.</h2><p className="mt-5 text-white/55">Let&apos;s build something meaningful.</p>
@@ -73,14 +65,25 @@ export default function Overlay() {
 }
 
 function PlayerHUD() {
-  const progress = useWorldStore(s => s.progress);
+  const bar = useRef<HTMLDivElement>(null);
+  const xp = useRef<HTMLDivElement>(null);
+  useEffect(() => {
+    const update = () => {
+      const max = document.documentElement.scrollHeight - innerHeight;
+      const progress = max ? Math.min(1, Math.max(0, scrollY / max)) : 0;
+      if (bar.current) bar.current.style.transform = `scaleX(${progress})`;
+      if (xp.current) xp.current.textContent = `XP ${Math.round(progress * 1000).toString().padStart(4, '0')}`;
+    };
+    addEventListener('scroll', update, { passive: true });
+    update();
+    return () => removeEventListener('scroll', update);
+  }, []);
   return <div className="fixed left-5 top-5 z-40 hud text-[9px] text-white/55">
     <div>PLAYER 01</div><div>LEVEL 01 — ORIGIN</div><div className="mt-1 text-orange-300">STATUS: ONLINE</div>
-    <div className="mt-2 h-1 w-36 bg-white/10"><div className="h-full bg-orange-400" style={{width: `${progress * 100}%`}} /></div>
-    <div className="mt-1 text-[7px] text-white/30">XP {Math.round(progress * 1000).toString().padStart(4,'0')}</div>
+    <div className="mt-2 h-1 w-36 bg-white/10"><div ref={bar} className="h-full w-full origin-left bg-orange-400" /></div>
+    <div ref={xp} className="mt-1 text-[7px] text-white/30">XP 0000</div>
   </div>;
 }
-
 function Button({children, onClick, secondary=false}:{children:React.ReactNode;onClick:()=>void;secondary?:boolean}) {
   return <motion.button whileHover={{y:-3,scale:1.02}} whileTap={{scale:.98}} onClick={onClick} className={secondary ? 'glass rounded-full px-6 py-3 text-xs font-black tracking-widest' : 'rounded-full bg-orange-500 px-6 py-3 text-xs font-black tracking-widest text-black'}>{children}</motion.button>;
 }
