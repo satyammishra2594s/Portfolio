@@ -1,7 +1,7 @@
 'use client';
 
 import { useEffect, useMemo, useRef, useState } from 'react';
-import { motion } from 'framer-motion';
+import { MotionConfig, motion } from 'framer-motion';
 
 const sections = ['HOME','THE WARRIOR','THE JOURNEY','SKILL TREE','SHADOW ARTS','VICTORIES','FINAL BATTLE','ENDING'];
 
@@ -21,7 +21,7 @@ export default function Overlay() {
     scrollTo({ top: max * (i / (sections.length - 1)), behavior: matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth' });
   };
 
-  return <div className="relative z-10 pointer-events-none">
+  return <MotionConfig reducedMotion="user"><div className="relative z-10 pointer-events-none">
     <nav className="pointer-events-auto fixed left-1/2 top-4 z-40 flex max-w-[96vw] -translate-x-1/2 overflow-x-auto rounded-full border border-white/10 bg-black/45 px-1 py-1 backdrop-blur-xl">
       {sections.map((s,i) => <button key={s} onClick={() => jump(i)} className="whitespace-nowrap px-3 py-2 text-[8px] font-bold tracking-[.16em] text-white/60 transition hover:text-orange-300 md:text-[9px]">{s}</button>)}
     </nav>
@@ -61,7 +61,7 @@ export default function Overlay() {
 
       <section className="flex min-h-screen items-center justify-center px-6 text-center"><div><p className="hud text-orange-300">NEXT LEVEL LOADING…</p><h3 className="mt-5 text-5xl font-black md:text-8xl">SATYAM MISHRA</h3><p className="mt-4 tracking-[.35em] text-white/45">BUILD. LEARN. INNOVATE.</p><button onClick={() => jump(0)} className="pointer-events-auto mt-10 rounded-full border border-white/15 px-6 py-3 text-xs font-bold tracking-widest text-white/70 hover:border-orange-400 hover:text-orange-300">RESTART QUEST</button></div></section>
     </main>
-  </div>;
+  </div></MotionConfig>;
 }
 
 function PlayerHUD() {
