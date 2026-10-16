@@ -1,6 +1,6 @@
 'use client';
 
-import { useFrame } from '@react-three/fiber';
+import { useFrame, useThree } from '@react-three/fiber';
 import { useEffect, useRef } from 'react';
 import * as THREE from 'three';
 import { useWorldStore } from '../lib/store';
@@ -11,6 +11,8 @@ const edge = '#283744';
 const cyan = '#71f4ff';
 
 export default function Robot() {
+  const { size } = useThree();
+  const compact = size.width < 700;
   const rig = useRef<THREE.Group>(null);
   const torso = useRef<THREE.Group>(null);
   const head = useRef<THREE.Group>(null);
@@ -31,17 +33,17 @@ export default function Robot() {
     const reduced = useWorldStore.getState().reduced;
     const t = reduced ? 0 : clock.elapsedTime;
     const hover = hovered.current ? 1 : 0;
-    const pulse = charge.current;
-    charge.current = Math.max(0, pulse - delta * 1.7);
+    const pulse = reduced ? 0 : charge.current;
+    if (!reduced) charge.current = Math.max(0, pulse - delta * 1.7);
 
     rig.current.position.y = THREE.MathUtils.damp(rig.current.position.y, -0.95 + (reduced ? 0 : Math.sin(t * 1.7) * 0.085) + pulse * 0.18, 5, delta);
-    rig.current.rotation.y = THREE.MathUtils.damp(rig.current.rotation.y, -0.2 + pointer.x * 0.12 + (hover ? 0.12 : 0) + (reduced ? 0 : Math.sin(t * 0.42) * 0.035), 3.5, delta);
+    rig.current.rotation.y = THREE.MathUtils.damp(rig.current.rotation.y, -0.2 + (reduced ? 0 : pointer.x) * 0.12 + (hover ? 0.12 : 0) + (reduced ? 0 : Math.sin(t * 0.42) * 0.035), 3.5, delta);
     if (torso.current) {
-      torso.current.rotation.z = THREE.MathUtils.damp(torso.current.rotation.z, pointer.y * -0.035 + (reduced ? 0 : Math.sin(t * 1.1) * 0.018), 4, delta);
+      torso.current.rotation.z = THREE.MathUtils.damp(torso.current.rotation.z, (reduced ? 0 : pointer.y) * -0.035 + (reduced ? 0 : Math.sin(t * 1.1) * 0.018), 4, delta);
     }
     if (head.current) {
-      head.current.rotation.y = THREE.MathUtils.damp(head.current.rotation.y, pointer.x * 0.13, 4, delta);
-      head.current.rotation.x = THREE.MathUtils.damp(head.current.rotation.x, pointer.y * 0.08, 4, delta);
+      head.current.rotation.y = THREE.MathUtils.damp(head.current.rotation.y, (reduced ? 0 : pointer.x) * 0.13, 4, delta);
+      head.current.rotation.x = THREE.MathUtils.damp(head.current.rotation.x, (reduced ? 0 : pointer.y) * 0.08, 4, delta);
     }
     if (leftArm.current) leftArm.current.rotation.z = THREE.MathUtils.damp(leftArm.current.rotation.z, -0.1 + (reduced ? 0 : Math.sin(t * 1.3) * 0.025), 4, delta);
     if (rightArm.current) rightArm.current.rotation.z = THREE.MathUtils.damp(rightArm.current.rotation.z, 0.22 + (reduced ? 0 : Math.sin(t * 1.3 + 1) * 0.025) - pulse * 0.2, 4, delta);
@@ -55,11 +57,11 @@ export default function Robot() {
   return (
     <group
       ref={rig}
-      position={[3.45, -0.95, -15]}
-      scale={1.2}
+      position={[compact ? 2.55 : 3.45, -0.95, -15]}
+      scale={compact ? 0.88 : 1.2}
       onPointerOver={(e) => { e.stopPropagation(); hovered.current = true; document.body.style.cursor = 'pointer'; }}
       onPointerOut={() => { hovered.current = false; document.body.style.cursor = ''; }}
-      onClick={(e) => { e.stopPropagation(); charge.current = 1.35; }}
+      onClick={(e) => { e.stopPropagation(); if (!useWorldStore.getState().reduced) charge.current = 1.35; }}
     >
       {/* A quiet radar ring grounds the mech in the scene. */}
       <group ref={orbit} position={[0, 0.02, 0]}>
