@@ -84,7 +84,7 @@ export default function ArcadeExperience() {
   const [score, setScore] = useState(0);
   const [roleIndex, setRoleIndex] = useState(0);
   const [bootStep, setBootStep] = useState<number | null>(null);
-  const [soundEnabled, setSoundEnabled] = useState(false);
+  const [soundEnabled, setSoundEnabled] = useState(true);
   const [crtEnabled, setCrtEnabled] = useState(true);
   const [cheatActive, setCheatActive] = useState(false);
   const [countdown, setCountdown] = useState(9);
@@ -194,9 +194,9 @@ export default function ArcadeExperience() {
   useEffect(() => {
     const finePointer = window.matchMedia('(pointer: fine)');
     if (!finePointer.matches) return;
-    document.body.classList.add('custom-cursor-enabled');
     const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
     let cursorActive = false;
+    let cursorReady = false;
 
     const moveCursor = () => {
       cursorActive = false;
@@ -220,6 +220,16 @@ export default function ArcadeExperience() {
     };
 
     const pointermove = (event: PointerEvent) => {
+      if (!cursorReady) {
+        cursorReady = true;
+        cursorPositionRef.current.x = event.clientX;
+        cursorPositionRef.current.y = event.clientY;
+        trailPositionRef.current.x = event.clientX;
+        trailPositionRef.current.y = event.clientY;
+        cursorRef.current?.style.setProperty('transform', 'translate3d(' + event.clientX + 'px,' + event.clientY + 'px,0)');
+        trailRef.current?.style.setProperty('transform', 'translate3d(' + (event.clientX - 3) + 'px,' + (event.clientY - 3) + 'px,0)');
+        document.body.classList.add('custom-cursor-enabled');
+      }
       targetRef.current.x = event.clientX;
       targetRef.current.y = event.clientY;
       if (!cursorActive) {
@@ -580,3 +590,4 @@ export default function ArcadeExperience() {
     </div>
   );
 }
+
