@@ -1253,7 +1253,7 @@ button {
 .pixel-cursor,
 .pixel-cursor-trail {
   position: fixed;
-  z-index: 110;
+  z-index: 140;
   top: 0;
   left: 0;
   pointer-events: none;
@@ -1660,3 +1660,4 @@ button {
     scroll-behavior: auto !important;
   }
 }
+
