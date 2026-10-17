@@ -228,6 +228,11 @@ export const portfolio = {
         kind: "profile",
       },
       {
+        label: "Instagram",
+        href: "https://www.instagram.com/satyammishra_2007/",
+        kind: "profile",
+      },
+      {
         label: "Email",
         href: null,
         kind: "placeholder",
@@ -249,3 +254,4 @@ export const portfolio = {
     year: "2026",
   },
 } as const;
+
