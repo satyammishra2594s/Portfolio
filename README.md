@@ -1,20 +1,17 @@
-# Satyam Mishra — Interactive 3D Portfolio
+# Satyam Mishra — Arcade Portfolio
 
-A cinematic Next.js portfolio built with React Three Fiber, Three.js, GSAP, and custom GLSL shaders.
+A Next.js portfolio designed as an original, pixel-art run-and-gun arcade campaign. It uses a low-resolution Canvas 2D scene, semantic HTML for all portfolio copy, and GSAP for stage entrance transitions.
 
-## Experience
+## Edit the portfolio
 
-- A procedural cyber-mech tracks the pointer and charges its core when clicked.
-- Scroll drives the camera through a fire-lit world, opening gates and milestone screens.
-- GPU shader particles, bloom, and depth effects scale down on smaller or lower-powered devices.
-- Reduced-motion preferences and browsers without WebGL get a calmer fallback.
-- The story keeps the existing milestones: Gaganyaan internship, ISRO Hackathon, Deloitte Australia cybersecurity simulation via Forage, AWS SBG IIT Jodhpur technical co-lead, Smart India Hackathon, and Lean Six Sigma AI Yellow Belt.
+Update **content/portfolio.ts** to change the name, biography, stage labels, skills, terminal output, missions, achievements, contact links, and SEO description. The page and generated Open Graph image read from this file. Email and additional social profiles are marked as placeholders until their URLs are added.
 
 ## Run locally
 
-```bash
-npm install
-npm run dev
-```
+Install dependencies with npm install, then start the dev server with npm run dev.
 
-The mech and environment are procedural, so no external 3D asset download is required.
+## Check the production build
+
+Run npm run lint and npm run build.
+
+The boot prompt can be skipped; the preference is saved in local storage. Sound effects start muted and can be enabled from the HUD. The CRT treatment can be toggled independently.
