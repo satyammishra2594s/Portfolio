@@ -1,12 +1,20 @@
-# Satyam Mishra — Cinematic 3D Portfolio
+# Satyam Mishra — Interactive 3D Portfolio
 
-A Next.js + React Three Fiber portfolio built as a cinematic scrollytelling 3D battlefield experience.
+A cinematic Next.js portfolio built with React Three Fiber, Three.js, GSAP, and custom GLSL shaders.
 
-## Run
+## Experience
+
+- A procedural cyber-mech tracks the pointer and charges its core when clicked.
+- Scroll drives the camera through a fire-lit world, opening gates and milestone screens.
+- GPU shader particles, bloom, and depth effects scale down on smaller or lower-powered devices.
+- Reduced-motion preferences and browsers without WebGL get a calmer fallback.
+- The story keeps the existing milestones: Gaganyaan internship, ISRO Hackathon, Deloitte Australia cybersecurity simulation via Forage, AWS SBG IIT Jodhpur technical co-lead, Smart India Hackathon, and Lean Six Sigma AI Yellow Belt.
+
+## Run locally
 
 ```bash
 npm install
 npm run dev
 ```
 
-The visual scene uses procedural geometry and particles so it runs without mandatory binary assets. A production pass can add a licensed samurai GLB and Poly Haven HDRI when asset URLs/licensing are finalized.
+The mech and environment are procedural, so no external 3D asset download is required.
