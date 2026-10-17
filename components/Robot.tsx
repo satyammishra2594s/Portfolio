@@ -57,7 +57,7 @@ export default function Robot() {
   return (
     <group
       ref={rig}
-      position={[compact ? 2.55 : 3.45, -0.95, -15]}
+      position={[compact ? 0.9 : 7.2, -0.95, -15]}
       rotation-y={-0.2}
       scale={compact ? 0.88 : 1.2}
       onPointerOver={(e) => { e.stopPropagation(); hovered.current = true; document.body.style.cursor = 'pointer'; }}
