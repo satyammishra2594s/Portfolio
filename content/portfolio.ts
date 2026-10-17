@@ -31,7 +31,7 @@ export const portfolio = {
     insertCoin: "Insert coin",
     onePlayerStart: "1P start",
     skipIntro: "Skip intro",
-    mutedDefault: "Sound effects start muted.",
+    mutedDefault: "Sound effects are on by default.",
   },
   stages: [
     { id: "home", nav: "Jungle" },
