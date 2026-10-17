@@ -6,8 +6,8 @@ import * as THREE from 'three';
 import { useWorldStore } from '../lib/store';
 
 const orange = '#ff5724';
-const metal = '#111821';
-const edge = '#283744';
+const metal = '#1b2934';
+const edge = '#3a4d58';
 const cyan = '#71f4ff';
 
 export default function Robot() {
@@ -57,13 +57,14 @@ export default function Robot() {
   return (
     <group
       ref={rig}
-      position={[compact ? 0.9 : 7.2, -0.95, -15]}
+      position={[compact ? 0.9 : 9.2, -0.95, -15]}
       rotation-y={-0.2}
       scale={compact ? 0.88 : 1.2}
       onPointerOver={(e) => { e.stopPropagation(); hovered.current = true; document.body.style.cursor = 'pointer'; }}
       onPointerOut={() => { hovered.current = false; document.body.style.cursor = ''; }}
       onClick={(e) => { e.stopPropagation(); if (!useWorldStore.getState().reduced) charge.current = 1.35; }}
     >
+      <pointLight position={[0, 3.8, 2.4]} color={cyan} intensity={4.5} distance={12} />
       {/* A quiet radar ring grounds the mech in the scene. */}
       <group ref={orbit} position={[0, 0.02, 0]}>
         <mesh rotation-x={-Math.PI / 2}><torusGeometry args={[2.15, 0.018, 6, 96]} /><meshBasicMaterial color={cyan} transparent opacity={0.58} /></mesh>
