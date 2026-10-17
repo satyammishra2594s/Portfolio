@@ -45,6 +45,8 @@ export default function JungleCanvas({ stageIndex }: { stageIndex: number }) {
     const context = canvas?.getContext('2d', { alpha: false, desynchronized: true });
     if (!canvas || !context) return;
 
+    const drawContext = context as CanvasRenderingContext2D;
+
     const sky = newLayer();
     const mountains = newLayer();
     const jungle = newLayer();
@@ -209,131 +211,131 @@ export default function JungleCanvas({ stageIndex }: { stageIndex: number }) {
     }
 
     function drawWaterfall(now: number) {
-      context.fillStyle = '#126979';
-      context.fillRect(273, 76, 47, 106);
-      context.fillStyle = '#163a38';
-      context.fillRect(266, 70, 7, 115);
-      context.fillRect(320, 70, 6, 116);
-      context.fillStyle = '#62e0e7';
-      context.fillRect(278, 77, 4, 103);
-      context.fillRect(292, 77, 5, 103);
-      context.fillRect(310, 77, 3, 103);
+      drawContext.fillStyle = '#126979';
+      drawContext.fillRect(273, 76, 47, 106);
+      drawContext.fillStyle = '#163a38';
+      drawContext.fillRect(266, 70, 7, 115);
+      drawContext.fillRect(320, 70, 6, 116);
+      drawContext.fillStyle = '#62e0e7';
+      drawContext.fillRect(278, 77, 4, 103);
+      drawContext.fillRect(292, 77, 5, 103);
+      drawContext.fillRect(310, 77, 3, 103);
       const flow = (now * 18) % 9;
-      context.fillStyle = '#b8ffff';
+      drawContext.fillStyle = '#b8ffff';
       for (let y = -9; y < 108; y += 18) {
-        context.fillRect(284, y + flow + 76, 2, 7);
-        context.fillRect(303, y + flow + 76, 2, 8);
+        drawContext.fillRect(284, y + flow + 76, 2, 7);
+        drawContext.fillRect(303, y + flow + 76, 2, 8);
       }
-      context.fillStyle = '#71eaf1';
-      context.fillRect(266, 177, 61, 7);
-      context.fillRect(279, 185, 42, 2);
+      drawContext.fillStyle = '#71eaf1';
+      drawContext.fillRect(266, 177, 61, 7);
+      drawContext.fillRect(279, 185, 42, 2);
     }
 
     function drawBase(now: number) {
-      context.fillStyle = '#26333c';
-      context.fillRect(276, 87, 80, 95);
-      context.fillStyle = '#54615b';
-      context.fillRect(282, 80, 69, 8);
-      context.fillRect(294, 66, 9, 14);
-      context.fillRect(332, 59, 11, 21);
-      context.fillStyle = '#8f9d83';
-      context.fillRect(285, 98, 6, 77);
-      context.fillRect(346, 98, 5, 77);
-      context.fillStyle = Math.floor(now * 3) % 2 ? '#f7784d' : '#f9d66b';
-      context.fillRect(310, 111, 15, 12);
-      context.fillStyle = '#15212a';
-      context.fillRect(314, 114, 7, 6);
+      drawContext.fillStyle = '#26333c';
+      drawContext.fillRect(276, 87, 80, 95);
+      drawContext.fillStyle = '#54615b';
+      drawContext.fillRect(282, 80, 69, 8);
+      drawContext.fillRect(294, 66, 9, 14);
+      drawContext.fillRect(332, 59, 11, 21);
+      drawContext.fillStyle = '#8f9d83';
+      drawContext.fillRect(285, 98, 6, 77);
+      drawContext.fillRect(346, 98, 5, 77);
+      drawContext.fillStyle = Math.floor(now * 3) % 2 ? '#f7784d' : '#f9d66b';
+      drawContext.fillRect(310, 111, 15, 12);
+      drawContext.fillStyle = '#15212a';
+      drawContext.fillRect(314, 114, 7, 6);
     }
 
     function drawEnergyZone(now: number) {
-      context.fillStyle = '#311e28';
-      context.fillRect(260, 118, 112, 64);
-      context.fillStyle = '#ff7645';
-      context.fillRect(271, 110, 7, 73);
-      context.fillRect(345, 105, 6, 78);
-      context.fillStyle = '#f5bd53';
-      context.fillRect(266, 137 + ((now * 12) % 20), 85, 3);
-      context.fillStyle = '#f56546';
-      context.fillRect(289, 145, 21, 24);
-      context.fillStyle = '#ffd879';
-      context.fillRect(295, 151, 9, 12);
+      drawContext.fillStyle = '#311e28';
+      drawContext.fillRect(260, 118, 112, 64);
+      drawContext.fillStyle = '#ff7645';
+      drawContext.fillRect(271, 110, 7, 73);
+      drawContext.fillRect(345, 105, 6, 78);
+      drawContext.fillStyle = '#f5bd53';
+      drawContext.fillRect(266, 137 + ((now * 12) % 20), 85, 3);
+      drawContext.fillStyle = '#f56546';
+      drawContext.fillRect(289, 145, 21, 24);
+      drawContext.fillStyle = '#ffd879';
+      drawContext.fillRect(295, 151, 9, 12);
     }
 
     function drawHangar() {
-      context.fillStyle = '#263746';
-      context.fillRect(263, 92, 110, 90);
-      context.fillStyle = '#637078';
-      context.fillRect(263, 92, 110, 6);
-      context.fillRect(263, 113, 110, 3);
-      context.fillRect(263, 169, 110, 5);
-      context.fillStyle = '#9bb5aa';
+      drawContext.fillStyle = '#263746';
+      drawContext.fillRect(263, 92, 110, 90);
+      drawContext.fillStyle = '#637078';
+      drawContext.fillRect(263, 92, 110, 6);
+      drawContext.fillRect(263, 113, 110, 3);
+      drawContext.fillRect(263, 169, 110, 5);
+      drawContext.fillStyle = '#9bb5aa';
       for (let x = 271; x < 370; x += 22) {
-        context.fillRect(x, 102, 4, 64);
+        drawContext.fillRect(x, 102, 4, 64);
       }
-      context.fillStyle = '#e0c96d';
-      context.fillRect(303, 124, 31, 3);
-      context.fillRect(316, 117, 4, 17);
+      drawContext.fillStyle = '#e0c96d';
+      drawContext.fillRect(303, 124, 31, 3);
+      drawContext.fillRect(316, 117, 4, 17);
     }
 
     function drawBossLair(now: number) {
-      context.fillStyle = '#301e2b';
-      context.fillRect(264, 78, 109, 104);
-      context.fillStyle = '#6d3042';
-      context.fillRect(271, 83, 95, 7);
-      context.fillRect(271, 173, 95, 7);
-      context.fillStyle = '#842e3f';
-      context.fillRect(281, 90, 8, 80);
-      context.fillRect(347, 90, 8, 80);
-      context.fillStyle = Math.floor(now * 5) % 2 ? '#ff644a' : '#f5b958';
-      context.fillRect(303, 111, 33, 7);
-      context.fillRect(309, 126, 21, 5);
-      context.fillRect(303, 141, 33, 7);
+      drawContext.fillStyle = '#301e2b';
+      drawContext.fillRect(264, 78, 109, 104);
+      drawContext.fillStyle = '#6d3042';
+      drawContext.fillRect(271, 83, 95, 7);
+      drawContext.fillRect(271, 173, 95, 7);
+      drawContext.fillStyle = '#842e3f';
+      drawContext.fillRect(281, 90, 8, 80);
+      drawContext.fillRect(347, 90, 8, 80);
+      drawContext.fillStyle = Math.floor(now * 5) % 2 ? '#ff644a' : '#f5b958';
+      drawContext.fillRect(303, 111, 33, 7);
+      drawContext.fillRect(309, 126, 21, 5);
+      drawContext.fillRect(303, 141, 33, 7);
     }
 
     function drawCommando(now: number) {
       const runnerX = Math.floor((now * 39) % (WIDTH + 34)) - 24;
       const feet = GROUND_Y - 1;
       const step = Math.floor(now * 10) % 2;
-      context.fillStyle = '#18251f';
-      context.fillRect(runnerX + 3, feet - 5, 5, 4);
-      context.fillRect(runnerX + 11, feet - (step ? 7 : 4), 6, 4);
-      context.fillStyle = '#668b50';
-      context.fillRect(runnerX + 3, feet - 12, 13, 8);
-      context.fillRect(runnerX + 1, feet - 11, 4, 5);
-      context.fillStyle = '#e9b67b';
-      context.fillRect(runnerX + 11, feet - 19, 8, 7);
-      context.fillStyle = '#536f42';
-      context.fillRect(runnerX + 8, feet - 23, 13, 6);
-      context.fillRect(runnerX + 6, feet - 18, 8, 2);
-      context.fillStyle = '#82412f';
-      context.fillRect(runnerX + 14, feet - 12, 5, 3);
-      context.fillStyle = '#c1c8a0';
-      context.fillRect(runnerX + 17, feet - 14, 12, 3);
-      context.fillStyle = '#474c3f';
-      context.fillRect(runnerX + 25, feet - 13, 9, 2);
+      drawContext.fillStyle = '#18251f';
+      drawContext.fillRect(runnerX + 3, feet - 5, 5, 4);
+      drawContext.fillRect(runnerX + 11, feet - (step ? 7 : 4), 6, 4);
+      drawContext.fillStyle = '#668b50';
+      drawContext.fillRect(runnerX + 3, feet - 12, 13, 8);
+      drawContext.fillRect(runnerX + 1, feet - 11, 4, 5);
+      drawContext.fillStyle = '#e9b67b';
+      drawContext.fillRect(runnerX + 11, feet - 19, 8, 7);
+      drawContext.fillStyle = '#536f42';
+      drawContext.fillRect(runnerX + 8, feet - 23, 13, 6);
+      drawContext.fillRect(runnerX + 6, feet - 18, 8, 2);
+      drawContext.fillStyle = '#82412f';
+      drawContext.fillRect(runnerX + 14, feet - 12, 5, 3);
+      drawContext.fillStyle = '#c1c8a0';
+      drawContext.fillRect(runnerX + 17, feet - 14, 12, 3);
+      drawContext.fillStyle = '#474c3f';
+      drawContext.fillRect(runnerX + 25, feet - 13, 9, 2);
       if (now - lastShot > 0.62) {
         lastShot = now;
         shoot(runnerX + 33, feet - 13, now);
       }
       if (now < cheatUntil) {
-        context.fillStyle = '#f4cc6b';
-        context.fillRect(runnerX + 31, feet - 16, 10, 2);
-        context.fillRect(runnerX + 31, feet - 9, 10, 2);
+        drawContext.fillStyle = '#f4cc6b';
+        drawContext.fillRect(runnerX + 31, feet - 16, 10, 2);
+        drawContext.fillRect(runnerX + 31, feet - 9, 10, 2);
       }
     }
 
     function draw(now: number, delta: number) {
       const stage = stageRef.current;
       const parallax = scrollProgress * WIDTH;
-      context.imageSmoothingEnabled = false;
-      context.drawImage(sky, 0, 0);
+      drawContext.imageSmoothingEnabled = false;
+      drawContext.drawImage(sky, 0, 0);
       let offset = -((now * 2 + parallax * 0.09) % WIDTH);
-      context.drawImage(mountains, offset, 0);
-      context.drawImage(mountains, offset + WIDTH, 0);
+      drawContext.drawImage(mountains, offset, 0);
+      drawContext.drawImage(mountains, offset + WIDTH, 0);
       offset = -((now * 5 + parallax * 0.28) % WIDTH);
-      context.drawImage(jungle, offset, 0);
-      context.drawImage(jungle, offset + WIDTH, 0);
-      context.drawImage(ground, 0, 0);
+      drawContext.drawImage(jungle, offset, 0);
+      drawContext.drawImage(jungle, offset + WIDTH, 0);
+      drawContext.drawImage(ground, 0, 0);
 
       if (stage === 1) drawWaterfall(now);
       if (stage === 2) drawBase(now);
@@ -342,11 +344,11 @@ export default function JungleCanvas({ stageIndex }: { stageIndex: number }) {
       if (stage >= 5) drawBossLair(now);
 
       if (stage === 3) {
-        context.fillStyle = 'rgba(229, 84, 47, 0.12)';
-        context.fillRect(0, 0, WIDTH, HEIGHT);
+        drawContext.fillStyle = 'rgba(229, 84, 47, 0.12)';
+        drawContext.fillRect(0, 0, WIDTH, HEIGHT);
       } else if (stage >= 4) {
-        context.fillStyle = 'rgba(17, 20, 42, 0.20)';
-        context.fillRect(0, 0, WIDTH, HEIGHT);
+        drawContext.fillStyle = 'rgba(17, 20, 42, 0.20)';
+        drawContext.fillRect(0, 0, WIDTH, HEIGHT);
       }
 
       if (now >= nextAmbient) {
@@ -400,11 +402,11 @@ export default function JungleCanvas({ stageIndex }: { stageIndex: number }) {
         particle.x += particle.vx * delta;
         particle.y += particle.vy * delta;
         const alpha = Math.max(0, Math.min(1, particle.life / particle.maxLife));
-        context.globalAlpha = alpha;
-        context.fillStyle = particle.color;
-        context.fillRect(particle.x | 0, particle.y | 0, particle.rain ? 1 : particle.size, particle.rain ? 5 : particle.size);
+        drawContext.globalAlpha = alpha;
+        drawContext.fillStyle = particle.color;
+        drawContext.fillRect(particle.x | 0, particle.y | 0, particle.rain ? 1 : particle.size, particle.rain ? 5 : particle.size);
       }
-      context.globalAlpha = 1;
+      drawContext.globalAlpha = 1;
 
       for (let i = 0; i < bullets.length; i += 1) {
         const bullet = bullets[i];
@@ -414,8 +416,8 @@ export default function JungleCanvas({ stageIndex }: { stageIndex: number }) {
           bullet.active = false;
           continue;
         }
-        context.fillStyle = '#ffe89a';
-        context.fillRect(bullet.x | 0, bullet.y | 0, 4, 2);
+        drawContext.fillStyle = '#ffe89a';
+        drawContext.fillRect(bullet.x | 0, bullet.y | 0, 4, 2);
       }
 
       for (let i = 0; i < capsules.length; i += 1) {
@@ -427,13 +429,13 @@ export default function JungleCanvas({ stageIndex }: { stageIndex: number }) {
           burst(capsule.x, GROUND_Y - 7, 8);
           continue;
         }
-        context.fillStyle = '#e6d287';
-        context.fillRect(capsule.x | 0, capsule.y | 0, 12, 9);
-        context.fillStyle = '#d94e3b';
-        context.fillRect((capsule.x + 2) | 0, (capsule.y + 2) | 0, 8, 5);
-        context.fillStyle = '#fff3b4';
-        context.font = 'bold 7px monospace';
-        context.fillText(capsule.letter, capsule.x + 4, capsule.y + 7);
+        drawContext.fillStyle = '#e6d287';
+        drawContext.fillRect(capsule.x | 0, capsule.y | 0, 12, 9);
+        drawContext.fillStyle = '#d94e3b';
+        drawContext.fillRect((capsule.x + 2) | 0, (capsule.y + 2) | 0, 8, 5);
+        drawContext.fillStyle = '#fff3b4';
+        drawContext.font = 'bold 7px monospace';
+        drawContext.fillText(capsule.letter, capsule.x + 4, capsule.y + 7);
       }
 
       drawCommando(now);
@@ -534,3 +536,4 @@ export default function JungleCanvas({ stageIndex }: { stageIndex: number }) {
     />
   );
 }
+
